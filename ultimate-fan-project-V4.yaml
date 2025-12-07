@@ -1,9 +1,8 @@
 substitutions:
   name: kitchen
-  friendly_name: Fan $name
 
 esphome:
-  name: fan-$name
+  name: "fan-kitchen"
   #### Wait 10 Seconds, then enable WiFi #####
   on_boot:
     then:
@@ -33,7 +32,7 @@ wifi:
 
 binary_sensor:
   - platform: gpio
-    name: Button 1
+    name: Fan $name But1
     id: button1
     pin: 
       number: 27
@@ -42,7 +41,7 @@ binary_sensor:
         input: True
         pullup: True
     filters:
-      - delayed_on_off: 40ms
+      - delayed_on_off: 10ms
 
   ## Option 1: Basic IF-THEN ##
     # on_press:
@@ -70,7 +69,7 @@ binary_sensor:
             } else {
               id(fanspeed).publish_state(1), id(master).turn_on(), id(randomSwitch).turn_off();
             }
-            
+
     on_click:
       min_length: 1s
       max_length: 5s
@@ -78,7 +77,7 @@ binary_sensor:
         - switch.turn_on: randomSwitch
 
   - platform: gpio
-    name: Button 2
+    name: Fan $name But2
     id: button2
     pin:
       number: 14
@@ -98,7 +97,7 @@ binary_sensor:
             }
 
   - platform: gpio
-    name: Button 3
+    name: Fan $name But3
     id: button3
     pin:
       number: 12
@@ -120,7 +119,7 @@ binary_sensor:
 number:
   ## Slider for Home Assistant and Fan Speed Control ##
   - platform: template
-    name: Speed
+    name: Fan $name Speed
     id: fanspeed
     icon: mdi:weather-windy
     update_interval: never
@@ -176,18 +175,18 @@ interval:
 switch:
   ## "Party" Mode (Random) Switch ##
   - platform: template
-    name: Random
     id: randomSwitch
     icon: mdi:recycle
+    name: Fan $name Random
     optimistic: True
     on_turn_on: 
       - switch.turn_on: master
 
   ## "Master" Control Switch ##
   - platform: template
-    name: Master
     id: master
     icon: mdi:fan
+    name: Fan $name Master
     optimistic: true
 
     ## Option 1: Basic Lambda ##
@@ -217,56 +216,41 @@ switch:
 
   ## On-Board Relays (NOT "Relais" - That's French LOL) ##
   - platform: gpio
-    name: Relay1
-    id: relay1
+    name: Fan $name Relay1
     icon: mdi:fan-speed-1
+    id: relay1
     pin: 32
     interlock: &interlock_group [relay1, relay2, relay3]
     interlock_wait_time: 200ms
-    on_turn_on: 
-      then:
-        - number.set:
-            id: fanspeed
-            value: 1
 
   - platform: gpio
-    name: Relay2
-    id: relay2
+    name: Fan $name Relay2
     icon: mdi:fan-speed-2
+    id: relay2
     pin: 33
     interlock: *interlock_group
     interlock_wait_time: 200ms
-    on_turn_on: 
-      then:
-        - number.set:
-            id: fanspeed
-            value: 2
 
   - platform: gpio
-    name: Relay3
-    id: relay3
+    name: Fan $name Relay3
     icon: mdi:fan-speed-3
+    id: relay3
     pin: 25
     interlock: *interlock_group
     interlock_wait_time: 200ms
-    on_turn_on:
-      then:
-        - number.set:
-            id: fanspeed
-            value: 3
 
   ## Not Used for this Project ##
   - platform: gpio
-    name: Relay4
-    id: relay4
+    name: Fan $name Relay4
     icon: mdi:electric-switch
+    id: relay4
     pin: 26
   ################################
 
 ## The Other On-Board LED. Not used, just for Reference. ##
 light:
   - platform: monochromatic
-    name: LED
+    name: Fan $name LED
     id: led1
     output: led1Out
 
