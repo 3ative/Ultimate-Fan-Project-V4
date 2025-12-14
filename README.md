@@ -2,7 +2,7 @@
 Converting a 3-Speed Fan for Home Assistant control with ESPHome.
 ##### _Features:_
 
-> - ESP32 4-Relay board for easier builds
+> - ESP32 4-Relay Board for easier builds
 > - 3 LED Speed indicators
 > - Original Button functions
 > - Random Mode for Power saving and "Wind" effect
